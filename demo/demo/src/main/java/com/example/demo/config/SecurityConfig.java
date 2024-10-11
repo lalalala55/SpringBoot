@@ -3,6 +3,7 @@ package com.example.demo.config;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.core.userdetails.User;
@@ -28,9 +29,11 @@ public class SecurityConfig {
         return http
                 .authorizeHttpRequests(requests ->
                         requests.requestMatchers("/", "/demo").permitAll()
+                                .requestMatchers("/admin/").hasRole("ADMIN")
+                                .requestMatchers("/user/**").hasRole("USER")
                                 .anyRequest().authenticated())
                 .formLogin(Customizer.withDefaults())
-                .httpBasic(Customizer.withDefaults())
+//                .httpBasic(Customizer.withDefaults())
                 .build();
     }
 
@@ -44,8 +47,16 @@ public class SecurityConfig {
                                 .password(passwordEncoder.encode("ram143")) // encoding the password before
                                 .roles("ADMIN")
                                 .build()
+                        ,
+                        User.builder()
+                                .username("rama")
+                                .password(passwordEncoder.encode("sita143")) // encoding the password before
+                                .roles("USER")
+                                .build()
                 )
         );
+
+
 
         return new InMemoryUserDetailsManager(
             users
