@@ -35,7 +35,7 @@ public class SecurityConfig {
 
         List<UserDetails> users = new ArrayList<>(
                 Arrays.asList(
-                        User.withDefaultPasswordEncoder()
+                        User.builder()
                                 .username("sita")
                                 .password("s143")
                                 .roles("ADMIN")
@@ -46,5 +46,10 @@ public class SecurityConfig {
         return new InMemoryUserDetailsManager(
             users
         );
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return NoOpPasswordEncoder.getInstance();
     }
 }
