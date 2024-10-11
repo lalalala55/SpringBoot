@@ -13,9 +13,12 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
                 .authorizeHttpRequests(requests ->
-                        requests.anyRequest().authenticated())
+                        requests.requestMatchers("/", "/demo").permitAll()
+                                .anyRequest().authenticated())
                 .formLogin(Customizer.withDefaults())
 //                .httpBasic(Customizer.withDefaults())
                 .build();
     }
+
+
 }

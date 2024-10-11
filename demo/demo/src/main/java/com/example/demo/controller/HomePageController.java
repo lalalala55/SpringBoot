@@ -9,4 +9,9 @@ public class HomePageController {
     public String home(){
         return "Home Page - Welcome";
     }
+
+    @GetMapping("/demo")
+    public String demo(){
+        return "Demo page";
+    }
 }
