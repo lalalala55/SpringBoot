@@ -20,4 +20,9 @@ public class HomePageController {
     public String demo(){
         return "login";
     }
+
+    @GetMapping("/success-logout")
+    public String logoutSuccess() {
+        return "successlogout";
+    }
 }

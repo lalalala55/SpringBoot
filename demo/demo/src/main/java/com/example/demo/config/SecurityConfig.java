@@ -40,13 +40,18 @@ public class SecurityConfig {
         return http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(requests ->
-                        requests.anyRequest().authenticated())
+                        requests.requestMatchers("/success-logout").permitAll()
+                                .anyRequest().authenticated())
                 .formLogin(login ->
                         login.loginPage("/login").permitAll())
                 .rememberMe(rememberme ->
                         rememberme.tokenValiditySeconds((int) TimeUnit.DAYS.toSeconds(21))
                                 .key("somesecretkey")) // 21 days of validity
-
+                .logout(logout ->
+                        logout.clearAuthentication(true)
+                                .invalidateHttpSession(true)
+                                .deleteCookies("JSESSIONID", "remember-me")
+                                .logoutSuccessUrl("/success-logout"))
                 .httpBasic(Customizer.withDefaults())
                 .build();
     }
