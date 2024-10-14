@@ -14,6 +14,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.csrf.CsrfTokenRepository;
+import org.springframework.security.web.csrf.CsrfTokenRequestHandler;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -35,14 +37,11 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
+                .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(requests ->
-                        requests.requestMatchers("/", "/demo").permitAll()
-                                .requestMatchers("/admin/").hasRole(ADMIN.name())
-                                .requestMatchers("/admin/").hasAnyAuthority(COURSE_READ.name(), COURSE_WRITE.name(), USER_READ.name(), USER_WRITE.name())
-                                .requestMatchers("/user/**").hasRole(USER.name())
-                                .requestMatchers("/user/**").hasAuthority(COURSE_READ.name())
-                                .anyRequest().authenticated())
+                        requests.anyRequest().authenticated())
                 .formLogin(Customizer.withDefaults())
+                .httpBasic(Customizer.withDefaults())
                 .build();
     }
 

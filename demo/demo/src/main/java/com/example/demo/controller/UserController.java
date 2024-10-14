@@ -1,14 +1,12 @@
 package com.example.demo.controller;
 
 import com.example.demo.modal.User;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @RestController
@@ -28,5 +26,22 @@ public class UserController {
                 .filter(user -> user.getId() == userId)
                 .findFirst()
                 .orElseThrow();
+    }
+
+    @PostMapping
+    public List<User> saveUser(@RequestBody User user) {
+        users.add(user);
+        return users;
+    }
+
+    @PutMapping
+    public User updateUser(@RequestBody User user){
+       return users.stream().filter(currentUser -> currentUser.getId() == user.getId()).findFirst().orElseThrow();
+    }
+
+    @DeleteMapping("{userId}")
+    public List<User> deleteUser(@PathVariable Integer userId){
+        users = users.stream().filter(currentUser -> currentUser.getId() != userId).collect(Collectors.toList());
+        return users;
     }
 }
