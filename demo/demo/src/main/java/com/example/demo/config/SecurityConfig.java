@@ -40,7 +40,9 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(requests ->
                         requests.anyRequest().authenticated())
-                .formLogin(login -> login.loginPage("/login").permitAll())
+                .formLogin(login ->
+                        login.loginPage("/login").permitAll())
+                .rememberMe(Customizer.withDefaults())
                 .httpBasic(Customizer.withDefaults())
                 .build();
     }
