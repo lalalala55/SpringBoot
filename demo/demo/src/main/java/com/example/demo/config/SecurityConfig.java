@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 import static com.example.demo.roles_permissions.ApplicationPermission.*;
@@ -42,7 +43,10 @@ public class SecurityConfig {
                         requests.anyRequest().authenticated())
                 .formLogin(login ->
                         login.loginPage("/login").permitAll())
-                .rememberMe(Customizer.withDefaults())
+                .rememberMe(rememberme ->
+                        rememberme.tokenValiditySeconds((int) TimeUnit.DAYS.toSeconds(21))
+                                .key("somesecretkey")) // 21 days of validity
+
                 .httpBasic(Customizer.withDefaults())
                 .build();
     }
