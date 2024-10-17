@@ -43,7 +43,7 @@ public class SecurityConfig {
                         requests.requestMatchers("/success-logout").permitAll()
                                 .anyRequest().authenticated())
                 .formLogin(login ->
-                        login.loginPage("/login").permitAll())
+                        login.loginPage("/login").permitAll()+)
                 .rememberMe(rememberme ->
                         rememberme.tokenValiditySeconds((int) TimeUnit.DAYS.toSeconds(21))
                                 .key("somesecretkey")) // 21 days of validity
